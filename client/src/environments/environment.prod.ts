@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUri: "https://budget-manager-backend.herokuapp.com"
 };
