@@ -1,2 +1,0 @@
-client=https://github.com/heroku/heroku-buildpack-nodejs
-server=https://github.com/heroku/heroku-buildpack-python
