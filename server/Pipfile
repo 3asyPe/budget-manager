@@ -11,6 +11,9 @@ pytz = "==2021.1"
 sqlparse = "==0.4.1"
 Django = "==3.2.5"
 pillow = "*"
+gunicorn = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
