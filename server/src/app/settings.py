@@ -13,7 +13,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = env("SECRET_KEY", default='i_i-dw20qqpwbeq+f*3%ii%o(drnss5o=mkiezp_utyot4%3ls')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = [
@@ -104,16 +103,15 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "static_root")
+STATIC_ROOT_PATH = env("STATIC_ROOT_PATH", cast=str, default="static_root")
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", STATIC_ROOT_PATH)
 
 MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
+MEDIA_ROOT_PATH = env("MEDIA_ROOT_PATH", cast=str, default="media_root")
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", MEDIA_ROOT_PATH)
 
 
 # SSL/ TLS
