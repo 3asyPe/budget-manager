@@ -4,15 +4,19 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-asgiref = "==3.4.1"
-django-environ = "==0.4.5"
-psycopg2 = "==2.9.1"
-pytz = "==2021.1"
-sqlparse = "==0.4.1"
-Django = "==3.2.5"
+psycopg2 = "*"
+pillow = "*"
 gunicorn = "*"
+django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+django-environ = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-xdist = "*"
+pytest-mock = "*"
+pytest-env = "*"
+mixer = "*"
 
 [dev-packages]
 
