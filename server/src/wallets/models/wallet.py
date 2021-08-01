@@ -11,7 +11,7 @@ class Wallet(models.Model):
 
     @property
     def main_balance(self):
-        return self.balances.order_by("created").first()
+        return self.balances.filter(main=True).first()
 
     def __str__(self):
         return f"{self.user.__str__()} {self.name} Wallet"

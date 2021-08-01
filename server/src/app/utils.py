@@ -2,7 +2,14 @@ import os
 import string
 import random
 
+from enum import Enum
+
 from django.utils.text import slugify
+
+
+class AppErrorMessages(Enum):
+    REQUEST_FIELDS_ERROR = "REQUEST_FIELDS_ERROR"
+    OBJECT_ALREADY_EXISTS_ERROR = "OBJECT_ALREADY_EXISTS_ERROR"
 
 
 def generate_unique_slug(instance, new_slug=None) -> str:

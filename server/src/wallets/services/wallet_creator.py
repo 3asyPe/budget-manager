@@ -38,6 +38,7 @@ class WalletCreator:
             wallet=wallet,
             currency=self.currency,
             amount=self.start_balance,
+            main=True,
         )
 
     def allowed_to_create(self, raise_exception):

@@ -1,6 +1,7 @@
 import pytest
 
-from app.errors import ObjectAlreadyExists, ValidationError
+from app.errors import ValidationError, ObjectAlreadyExists
+from wallets.models import Wallet
 from wallets.services import WalletCreator
 from wallets.utils import WalletErrorMessages
 
@@ -23,6 +24,7 @@ def test_wallet_creation(user, currency):
     balance = wallet.balances.first()
     assert float(balance.amount) == 1.00
     assert balance.currency == currency
+    assert balance.main == True
 
 
 @pytest.mark.parametrize("start_balance", [0.00, -123.2, 1231023, "1.00"])
