@@ -32,9 +32,5 @@ def get_filename_ext(filename):
     return name, ext
 
 
-def get_user_upload_image_path(*args, **kwargs):
-    return get_upload_image_path(*args, **kwargs, prefix="users")
-
-
 def generate_random_string(size=10, chars=string.ascii_lowercase + string.digits) -> str:
     return "".join(random.choice(chars) for _ in range(size))

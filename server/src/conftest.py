@@ -38,3 +38,13 @@ def another_user(mixer):
 @pytest.fixture
 def anonymous_user(mixer):
     return AnonymousUser()
+
+
+@pytest.fixture
+def currency(mixer):
+    return mixer.blend("currencies.Currency")
+
+
+@pytest.fixture
+def public_currency(mixer):
+    return mixer.blend("currencies.Currency", name="USD", code="USD", public=True)
