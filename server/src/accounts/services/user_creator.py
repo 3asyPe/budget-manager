@@ -1,3 +1,4 @@
+from rest_framework.authtoken.models import Token
 from accounts.models import User
 from app.errors import ObjectsAlreadyExists
 
@@ -37,3 +38,6 @@ class UserCreator:
                 return False
 
         return True
+
+    def after_creation(self, user):
+        Token.objects.get_or_create(user=user)
