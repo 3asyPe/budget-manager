@@ -16,11 +16,12 @@ SECRET_KEY = env("SECRET_KEY", default='i_i-dw20qqpwbeq+f*3%ii%o(drnss5o=mkiezp_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
+AUTH_USER_MODEL = 'accounts.User'
+
 ALLOWED_HOSTS = [
     'localhost',
     'budget-manager-backend.herokuapp.com',
 ]
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,8 +30,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
 
+    'accounts',
+
+    'corsheaders',
     'rest_framework',
 ]
 
@@ -112,6 +115,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "static_root")
 
 MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
 
