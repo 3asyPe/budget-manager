@@ -15,8 +15,7 @@ def create_wallet_api(request):
 
     try:
         name = data["name"]
-        start_balance = data["start_balance"]
-        currency_name = data["currency_name"]
+        balances = data["balances"]
     except KeyError:
         return Response({"error": AppErrorMessages.REQUEST_FIELDS_ERROR.value}, 400)
 
@@ -24,8 +23,7 @@ def create_wallet_api(request):
         wallet = WalletToolkit.create_wallet(
             user=request.user,
             name=name,
-            start_balance=start_balance,
-            currency_name=currency_name
+            balances=balances,
         )
     except ValidationError as exc:
         return Response({"error": str(exc.value)}, 400)
@@ -36,4 +34,18 @@ def create_wallet_api(request):
 
     serializer = WalletSerializer(instance=wallet)
     return Response(serializer.data, 201)
+
+
+@api_view(["PUT"])
+def edit_wallet_api(request):
+    data = request.POST
+
+    try:
+        id = data["id"]
+        name = data["name"]
+        balances = data["balances"]
+    except KeyError;
+        return Response({"error": AppErrorMessages.REQUEST_FIELDS_ERROR.value}, 400)
     
+
+        

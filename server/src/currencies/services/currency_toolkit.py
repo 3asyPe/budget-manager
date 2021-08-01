@@ -3,13 +3,10 @@ from currencies.models import Currency
 
 
 class CurrencyToolkit:
+    # Add sort by user
     @classmethod
     def get_currency(cls, user: User, currency_name: str) -> Currency:  
-        qs = Currency.objects.filter(user=user, name=currency_name, public=False)
-        if qs.exists():
-            return qs.first()
-        
-        qs = Currency.objects.filter(name=currency_name, public=True)
+        qs = Currency.objects.filter(name=currency_name)
         if qs.exists():
             return qs.first()
         

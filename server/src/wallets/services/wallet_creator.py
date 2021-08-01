@@ -12,18 +12,20 @@ class WalletCreator:
         self, 
         user: User, 
         name: str, 
-        start_balance: Union[float, str], 
-        currency: Currency,
+        balances: list,
     ):
         self.user = user
         self.name = name
-        self.start_balance = start_balance
-        self.currency = currency
+        self.balances = balances
 
-    def __call__(self, raise_exception=True) -> Optional[Wallet]:
+    def __call__(self,  raise_exception=True) -> Optional[Wallet]:
         if self.allowed_to_create(raise_exception=raise_exception):
             wallet = self.create_wallet()
-            balance = self.create_balance(wallet)
+            for i, balance in enumerate(self.balances):
+                if i == 0:
+                    balance = self.create_balance(wallet, balance, main=True)
+                else:
+                    balance = self.create_balance(wallet, balance, main=False)
             return wallet
         return None
 
@@ -33,12 +35,12 @@ class WalletCreator:
             name=self.name,
         )
 
-    def create_balance(self, wallet) -> WalletBalance:
+    def create_balance(self, wallet, balance, main=False) -> WalletBalance:
         return WalletBalance.objects.create(
             wallet=wallet,
-            currency=self.currency,
-            amount=self.start_balance,
-            main=True,
+            currency=balance["currency"],
+            amount=balance["amount"],
+            main=main,
         )
 
     def allowed_to_create(self, raise_exception):
