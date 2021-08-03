@@ -12,6 +12,10 @@ class AppErrorMessages(Enum):
     OBJECT_ALREADY_EXISTS_ERROR = "OBJECT_ALREADY_EXISTS_ERROR"
 
 
+def generate_random_string(size=10, chars=string.ascii_lowercase + string.digits) -> str:
+    return "".join(random.choice(chars) for _ in range(size))
+
+
 def generate_unique_slug(instance, new_slug=None) -> str:
     if new_slug is not None:
         slug = new_slug
@@ -37,7 +41,3 @@ def get_filename_ext(filename):
     base_name = os.path.basename(filename)
     name, ext = os.path.splitext(filename)
     return name, ext
-
-
-def generate_random_string(size=10, chars=string.ascii_lowercase + string.digits) -> str:
-    return "".join(random.choice(chars) for _ in range(size))

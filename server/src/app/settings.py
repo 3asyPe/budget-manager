@@ -20,6 +20,7 @@ AUTH_USER_MODEL = 'accounts.User'
 ALLOWED_HOSTS = [
     'localhost',
     'budget-manager-backend.herokuapp.com',
+    '127.0.0.1',
 ]
 
 INSTALLED_APPS = [
@@ -36,7 +37,15 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
