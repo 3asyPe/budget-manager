@@ -3,6 +3,7 @@ from typing import Union, Optional
 from app.errors import ValidationError
 from accounts.models import User
 from wallets.models import Wallet, WalletBalance
+from wallets.utils import WalletErrorMessages
 
 
 class WalletEditor:
@@ -19,7 +20,7 @@ class WalletEditor:
             for balance in self.balances:
                 balance = self.edit_balance(balance)
             return wallet
-        return None
+        return self.wallet
 
     def get_wallet(self) -> Wallet:
         return Wallet.objects.get(id=self.id)
@@ -46,7 +47,7 @@ class WalletEditor:
     def allowed_to_edit(self, raise_exception) -> bool:
         try:
             if not 0 < len(self.name) < 41:
-                    raise ValidationError(WalletErrorMessages.TOO_LONG_WALLET_NAME_ERROR.value)
+                raise ValidationError(WalletErrorMessages.TOO_LONG_WALLET_NAME_ERROR.value)
 
             if self.wallet is None:
                 raise Wallet.DoesNotExist()
