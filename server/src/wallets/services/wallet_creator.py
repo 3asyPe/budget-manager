@@ -50,7 +50,7 @@ class WalletCreator:
                 raise ObjectAlreadyExists()
             
             if not 0 < len(self.name) < 41:
-                raise ValidationError(WalletErrorMessages.TOO_LONG_WALLET_NAME_ERROR.value)
+                raise ValidationError(WalletErrorMessages.WRONG_WALLET_NAME_ERROR.value)
         except (ObjectAlreadyExists, ValidationError) as exc:
             if raise_exception:
                 raise exc

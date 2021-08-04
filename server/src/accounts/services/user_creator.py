@@ -1,4 +1,5 @@
 from rest_framework.authtoken.models import Token
+
 from accounts.models import User
 from app.errors import ObjectAlreadyExists
 

@@ -1,11 +1,11 @@
-from rest_framework.authtoken.models import Token
-from accounts import services
-from accounts.models import User
-from app.errors import ValidationError
-from accounts.utils import AccountErrorMessages
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
+
+from rest_framework.authtoken.models import Token
+
+from accounts.models import User
+from accounts.utils import AccountErrorMessages
+from app.errors import ValidationError
 
 
 user = get_user_model()
