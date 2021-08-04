@@ -1,5 +1,7 @@
+from rest_framework.authtoken.models import Token
+
 from accounts.models import User
-from app.errors import ObjectsAlreadyExists
+from app.errors import ObjectAlreadyExists
 
 
 class UserCreator:
@@ -29,11 +31,14 @@ class UserCreator:
     def allowed_to_create(self, raise_exception=True):
         try:
             if User.objects.filter(email=self.username).exists():
-                raise ObjectsAlreadyExists
-        except ObjectsAlreadyExists as exc:
+                raise ObjectAlreadyExists
+        except ObjectAlreadyExists as exc:
             if raise_exception:
                 raise exc
             else:
                 return False
 
         return True
+
+    def after_creation(self, user):
+        Token.objects.get_or_create(user=user)

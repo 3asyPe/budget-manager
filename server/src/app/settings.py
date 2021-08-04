@@ -13,7 +13,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = env("SECRET_KEY", default='i_i-dw20qqpwbeq+f*3%ii%o(drnss5o=mkiezp_utyot4%3ls')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -21,6 +20,7 @@ AUTH_USER_MODEL = 'accounts.User'
 ALLOWED_HOSTS = [
     'localhost',
     'budget-manager-backend.herokuapp.com',
+    '127.0.0.1',
 ]
 
 INSTALLED_APPS = [
@@ -32,10 +32,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'accounts',
+    'currencies',
+    'wallets',
 
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -106,19 +116,16 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "static_root")
+STATIC_URL = '/static/'
+STATIC_ROOT_PATH = env("STATIC_ROOT_PATH", cast=str, default="static_root")
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", STATIC_ROOT_PATH)
 
 MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
-
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
-
+MEDIA_ROOT_PATH = env("MEDIA_ROOT_PATH", cast=str, default="media_root")
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", MEDIA_ROOT_PATH)
 
 # SSL/ TLS
 if not DEBUG:

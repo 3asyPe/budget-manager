@@ -1,35 +1,19 @@
-import os
-import string
-import random
-from django.utils.text import slugify
+import enum
+
+from app.utils import get_upload_image_path
 
 
-def generate_unique_slug(instance, new_slug=None) -> str:
-    if new_slug is not None:
-        slug = new_slug
-    else: 
-        slug = slugify(instance.title)
+class AccountErrorMessages(enum.Enum):
+    TOO_LONG_EMAIL_ERROR = "TOO_LONG_EMAIL_ERROR"
+    NON_UNIQUE_EMAIL_ERROR = "NON_UNIQUE_EMAIL_ERROR"
+    INCORRECT_PASSWORD_SCHEME_ERROR = "INCORRECT_PASSWORD_SCHEME_ERROR"
 
-    Klass = instance.__class__
-    qs_exists = Klass.objects.filter(slug=slug).exists()
-    if qs_exists:
-        new_slug = f"{slug}-{generate_random_string(size=4)}"
-        return generate_unique_slug(instance, new_slug=new_slug)
-    return slug
+    DISABLED_ACCOUNT_ERROR = "DISABLED_ACCOUNT_ERROR"
+    CREDENTIALS_ERROR = "CREDENTIALS_ERROR"
+    REQUEST_FIELDS_ERROR = "REQUEST_FIELDS_ERROR"
 
-def get_upload_image_path(instance, filename: str, prefix: str,) -> str:
-    new_filename = generate_random_string()
-    name, ext = get_filename_ext(filename)
-    final_filename = f"{new_filename}{ext}"
-    return f"{prefix}/{final_filename}"
+    USER_IS_NOT_AUTHENTICATED_ERROR = "USER_IS_NOT_AUTHENTICATED_ERROR"
 
-def get_filename_ext(filename):
-    base_name = os.path.basename(filename)
-    name, ext = os.path.splitext(filename)
-    return name, ext
 
 def get_user_upload_image_path(*args, **kwargs):
     return get_upload_image_path(*args, **kwargs, prefix="users")
-
-def generate_random_string(size=10, chars=string.ascii_lowercase + string.digits) -> str:
-    return "".join(random.choice(chars) for _ in range(size))
