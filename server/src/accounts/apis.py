@@ -1,25 +1,23 @@
-from rest_framework import response
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import accounts
-from accounts import serializers
 
-from accounts.models import User
-from accounts.services import UserCreator, UserToolKit
+from accounts.services import UserToolKit
 from accounts.serializers import UserSerializer
-from app.errors import ValidationError
-from app.errors import ObjectAlreadyExists
-from rest_framework.authtoken.models import Token
+from app.errors import ValidationError, ObjectAlreadyExists
+from app.utils import AppErrorMessages
 
 
 @api_view(["POST"])
 def create_user_api(request, *args, **kwargs):
     data = request.POST or request.data
 
-    username = data.get('username')
-    first_name = data.get('first_name')
-    second_name = data.get('second_name')
-    password = data.get('password')
+    try:
+        username = data['username']
+        first_name = data['first_name']
+        second_name = data['second_name']
+        password = data['password']
+    except KeyError:
+        return Response({'error': AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
 
     try:
         user = UserToolKit.creater_user(

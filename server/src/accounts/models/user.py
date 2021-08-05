@@ -1,13 +1,9 @@
 from django.db import models
-
-# Create your models here.
 from django.contrib.auth.models import (
 
     AbstractBaseUser,
     BaseUserManager,
 )
-from django.conf import settings
-from django.db import models
 
 from accounts.utils import get_user_upload_image_path
 
@@ -59,6 +55,8 @@ class User(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    account = models.ForeignKey('accounts.Account', related_name='user', on_delete=models.CASCADE, null=True, blank=True)
+    owner = models.BooleanField(default=True)
 
     USERNAME_FIELD = "email"
     objects = UserManager()

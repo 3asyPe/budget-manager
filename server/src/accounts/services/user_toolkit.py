@@ -18,7 +18,7 @@ class UserToolKit:
             username=username,
             first_name=first_name,
             second_name=second_name,
-            password=password
+            password=password,
         )()
         return user
 
