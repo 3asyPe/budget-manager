@@ -41,7 +41,7 @@ def create_wallet_api(request):
 
 
 @api_view(["PUT"])
-@permission_classes(IsAuthenticated)
+@permission_classes([IsAuthenticated])
 def edit_wallet_api(request, id):
     data = request.data
 
@@ -70,7 +70,7 @@ def edit_wallet_api(request, id):
 
 
 @api_view(["DELETE"])
-@permission_classes(IsAuthenticated)
+@permission_classes([IsAuthenticated])
 def delete_wallet_api(request, id):
     try:
         WalletToolkit.delete_wallet(wallet_id=id)
@@ -81,7 +81,7 @@ def delete_wallet_api(request, id):
 
 
 @api_view(["GET"])
-@permission_classes(IsAuthenticated)
+@permission_classes([IsAuthenticated])
 def get_wallet_api(request, id):
     try:
         wallet = WalletToolkit.get_wallet(wallet_id=id)
@@ -89,14 +89,14 @@ def get_wallet_api(request, id):
         return Response({"error": WalletErrorMessages.WALLET_DOES_NOT_EXIST_ERROR.value}, 404)
 
     serializer = WalletSerializer(instance=wallet)
-    return Response({}, 200)
+    return Response(serializer.data, 200)
 
 
 @api_view(["GET"])
-@permission_classes(IsAuthenticated)
+@permission_classes([IsAuthenticated])
 def get_user_wallets_api(request):
     data = request.GET
-    show_hidden = data.get("show_hidden", False)
+    show_hidden = data.get("show_hidden") == "True" 
 
     wallets = WalletToolkit.get_wallets_by_user(user=request.user, show_hidden=show_hidden)
 

@@ -67,7 +67,7 @@ class DRFClient(APIClient):
 
         content = self._decode(response)
         if kwargs.get("empty_content") == True:
-            assert content == {}
+            assert content is None or content == {}
         else:
             assert content
 

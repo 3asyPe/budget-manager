@@ -30,6 +30,7 @@ def test_wallet_creation_api(create_wallet, balances):
     
     balances = wallet["balances"]
     for balance in balances:
+        assert balance["id"]
         assert balance["currency"]["name"]
         assert "code" in balance["currency"]
         assert balance["amount"]
