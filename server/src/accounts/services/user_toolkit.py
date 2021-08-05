@@ -1,5 +1,6 @@
 from rest_framework.authtoken.models import Token
 from accounts import services
+import accounts
 from accounts.models import User
 from app.errors import ValidationError
 from accounts.utils import AccountErrorMessages
@@ -18,7 +19,7 @@ class UserToolKit:
             username=username,
             first_name=first_name,
             second_name=second_name,
-            password=password
+            password=password,
         )()
         return user
 
