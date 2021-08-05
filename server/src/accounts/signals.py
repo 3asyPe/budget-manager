@@ -9,4 +9,4 @@ from accounts.models import User
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance, created, *args, **kwargs):
     if created:
-        Token.objects.create(user=instance)
+        Token.objects.get_or_create(user=instance)

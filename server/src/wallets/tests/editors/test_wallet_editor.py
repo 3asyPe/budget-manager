@@ -69,7 +69,7 @@ def test_wallet_editing_with_wrong_name(wallet, balances, name):
             balances=balances
         )()
     
-    assert str(exc.value) == WalletErrorMessages.TOO_LONG_WALLET_NAME_ERROR.value
+    assert str(exc.value) == WalletErrorMessages.WRONG_WALLET_NAME_ERROR.value
 
 
 def test_wallet_creation_with_raise_exception_false(wallet, balances):

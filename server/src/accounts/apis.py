@@ -30,7 +30,7 @@ def create_user_api(request, *args, **kwargs):
         return Response({'error': f'User {username} already exists'}, status=400)
 
     serializers = UserSerializer(instance=user)
-    return Response(serializers.data, status=200)
+    return Response(serializers.data, status=201)
 
 
 @api_view(["POST"])
