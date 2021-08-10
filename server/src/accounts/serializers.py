@@ -13,7 +13,6 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'first_name',
             'second_name',
-            'image',
             'token',
             'id',
         ]

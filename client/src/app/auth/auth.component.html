@@ -1,1 +1,49 @@
-<p>auth works!</p>
+
+<img class="b-logo" src="assets/images/B-red.svg" [ngStyle]="{'display': !signInMode ? 'block' : 'none'}">
+<img class="b-logo" src="assets/images/B-gray.svg" [ngStyle]="{'display': signInMode ? 'block' : 'none'}">
+<div class="content">
+    <div class="auth-widget">
+        <div class="auth-buttons">
+            <a class="auth-button" (click)="signInMode=false" [ngClass]="{'active': !signInMode}">Sign up</a>
+            <a class="auth-button" (click)="signInMode=true" [ngClass]="{'active': signInMode}">Sign in</a>
+        </div>
+        <div class="auth-content" [ngStyle]="{'display': !signInMode ? 'block' : 'none'}">
+            <div class="auth-title-box">
+                <div class="auth-title">Create your <span>B</span>udget Manager account</div>
+            </div>
+            <div class="auth-multiple-accounts-box">
+                <div class="auth-multiple-accounts-title">One account can be used by several users.</div>
+                <div class="auth-multiple-accounts-title">User can select what other users can do with this account.</div>
+            </div>
+            <form class="auth-form" #signUpForm="ngForm" (ngSubmit)="onSignUp(signUpForm)">
+                <div class="auth-form-group">
+                    <input type="text" class="auth-form-input" ngModel required name="firstName" placeholder="First name">
+                    <input type="text" class="auth-form-input" ngModel required name="secondName" placeholder="Second name">
+                </div>
+                <input type="email" class="auth-form-input" ngModel required name="email" placeholder="E-mail">
+                <div class="auth-form-group">
+                    <input type="password" class="auth-form-input" ngModel required name="password" placeholder="Password">
+                    <input type="password" class="auth-form-input" ngModel required name="passwordConfirmation" placeholder="Confirm password">
+                </div>
+                <div class="auth-agreement">By clicking Sign Up, you agree to our <a>Terms of Use</a> and our <a>Privacy Policy</a>.</div>
+
+                <button class="auth-form-btn" [disabled]="signUpForm.invalid || loading">Sign up</button>
+
+            </form>
+        </div>
+        <div class="auth-content" [ngStyle]="{'display': signInMode ? 'block' : 'none'}">
+            <div class="auth-title-box">
+                <div class="auth-title">Sign in to your <span>B</span>udget Manager account</div>
+            </div>
+            <form class="auth-form sign-in-form" #signInForm="ngForm" (ngSubmit)="onSignIn(signInForm)">
+                <input type="email" class="auth-form-input" ngModel required name="email" placeholder="E-mail">
+                <input type="password" class="auth-form-input" ngModel required name="password" placeholder="Password">
+
+                <div class="auth-agreement">By clicking Sign In, you agree to our <a>Terms of Use</a> and our <a>Privacy Policy</a>.</div>
+
+                <button class="auth-form-btn sign-in-btn" [disabled]="loading">Sign in</button>
+                <a class="auth-forgot-password">Forgot your password?</a>
+            </form>
+        </div>
+    </div>
+</div>

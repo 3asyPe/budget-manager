@@ -36,6 +36,9 @@ def create_user_api(request, *args, **kwargs):
 @api_view(["POST"])
 def authenticate_user_api(request, *args, **kwargs):
     data = request.POST or request.data
+    print(data)
+    print(request.data)
+    print(request.POST)
 
     username = data.get('username')
     password = data.get('password')
@@ -46,7 +49,7 @@ def authenticate_user_api(request, *args, **kwargs):
             password,
         )
     except ValidationError as exc:
-        return Response({'error': str(exc.value)}, status=400)
+        return Response({'error': str(exc)}, status=400)
 
     serializers = UserSerializer(instance=user)
     return Response(serializers.data, status=200)

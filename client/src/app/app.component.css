@@ -1,0 +1,16 @@
+.custom-container{
+    position: relative;
+    display:flex; 
+    flex-direction:column; 
+    min-height: 100vh;
+    height: 100%;
+    background: rgba(232, 232, 232, 0.34) 0% 0% no-repeat padding-box;
+    overflow: hidden;
+}
+
+footer{
+    background: #000000 0% 0% no-repeat padding-box;
+    opacity: 0.65;
+    height: 190px;
+    margin-top: auto;
+}
