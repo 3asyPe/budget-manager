@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from './auth.service';
 import { NgForm } from '@angular/forms';
-import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-auth',
@@ -13,6 +12,9 @@ export class AuthComponent implements OnInit {
 
     loading = false;
     signInMode = true;
+    
+    signInError: string|null = null
+    signUpError: string|null = null;
 
     constructor(private authService: AuthService,
                 private route: ActivatedRoute) { }
@@ -27,21 +29,30 @@ export class AuthComponent implements OnInit {
     }
 
     onSignIn(form: NgForm){
+        this.loading = true
         this.authService.signin(
             form.value.email,
             form.value.password,
         ).subscribe(
             data => {
-                
+                this.signInError = null
+                console.log(data)
+                this.loading = false
+            },
+            error => {
+                this.signInError = error.error.error
+                this.loading = false
             }
         )
     }
 
     onSignUp(form: NgForm){
+        this.loading = true
         const password = form.value.password
         const passwordConfirmation = form.value.passwordConfirmation
         if (password !== passwordConfirmation){
-            console.log("LOX")
+            this.signUpError = "WRONG_PASSWORD_CONFIRMATION_ERROR"
+            this.loading = false
             return
         }
         this.authService.signup(
@@ -51,8 +62,14 @@ export class AuthComponent implements OnInit {
             form.value.password
         ).subscribe(
             data => {
-
-            }
+                this.signUpError = null
+                console.log(data)
+                this.loading = false
+            },
+            error => {
+                this.signUpError = error.error.error
+                this.loading = false
+            },
         )
     }
 

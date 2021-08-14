@@ -20,14 +20,45 @@
                     <input type="text" class="auth-form-input" ngModel required name="firstName" placeholder="First name">
                     <input type="text" class="auth-form-input" ngModel required name="secondName" placeholder="Second name">
                 </div>
-                <input type="email" class="auth-form-input" ngModel required name="email" placeholder="E-mail">
+                <input 
+                    type="email" 
+                    class="auth-form-input" 
+                    ngModel 
+                    required 
+                    name="email" 
+                    placeholder="E-mail"
+                    [ngClass]="{'invalid': signUpError == 'NON_UNIQUE_EMAIL_ERROR'}"
+                >
                 <div class="auth-form-group">
-                    <input type="password" class="auth-form-input" ngModel required name="password" placeholder="Password">
-                    <input type="password" class="auth-form-input" ngModel required name="passwordConfirmation" placeholder="Confirm password">
+                    <input 
+                        type="password" 
+                        class="auth-form-input" 
+                        ngModel 
+                        required 
+                        name="password" 
+                        placeholder="Password"
+                        [ngClass]="{'invalid': signUpError == 'WRONG_PASSWORD_CONFIRMATION_ERROR'}"
+                    >
+                    <input 
+                        type="password" 
+                        class="auth-form-input" 
+                        ngModel 
+                        required 
+                        name="passwordConfirmation"
+                        placeholder="Confirm password"
+                        [ngClass]="{'invalid': signUpError == 'WRONG_PASSWORD_CONFIRMATION_ERROR'}"
+                    >
                 </div>
                 <div class="auth-agreement">By clicking Sign Up, you agree to our <a>Terms of Use</a> and our <a>Privacy Policy</a>.</div>
-
-                <button class="auth-form-btn" [disabled]="signUpForm.invalid || loading">Sign up</button>
+                <div class="auth-error" *ngIf="signUpError">
+                    <div *ngIf="signUpError == 'WRONG_PASSWORD_CONFIRMATION_ERROR'">
+                        Password and confirmation password do not match.
+                    </div>
+                    <div *ngIf="signUpError == 'NON_UNIQUE_EMAIL_ERROR'">
+                        User with this email already exists.
+                    </div>
+                </div>
+                <button class="auth-form-btn" [disabled]="signUpForm.invalid || loading" [ngClass]="{'invalid': signUpError}">Sign up</button>
 
             </form>
         </div>
@@ -40,8 +71,12 @@
                 <input type="password" class="auth-form-input" ngModel required name="password" placeholder="Password">
 
                 <div class="auth-agreement">By clicking Sign In, you agree to our <a>Terms of Use</a> and our <a>Privacy Policy</a>.</div>
-
-                <button class="auth-form-btn sign-in-btn" [disabled]="loading">Sign in</button>
+                <div class="auth-error sign-in-error" *ngIf="signInError">
+                    <div *ngIf="signInError == 'CREDENTIALS_ERROR'">
+                        The email or password you entered is invalid.
+                    </div>
+                </div>
+                <button class="auth-form-btn sign-in-btn" [disabled]="loading" [ngClass]="{'invalid': signInError}">Sign in</button>
                 <a class="auth-forgot-password">Forgot your password?</a>
             </form>
         </div>

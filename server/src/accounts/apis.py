@@ -3,6 +3,7 @@ from rest_framework.response import Response
 
 from accounts.services import UserToolKit
 from accounts.serializers import UserSerializer
+from accounts.utils import AccountErrorMessages
 from app.errors import ValidationError, ObjectAlreadyExists
 from app.utils import AppErrorMessages
 
@@ -26,8 +27,10 @@ def create_user_api(request, *args, **kwargs):
             second_name,
             password
         )
+    except ValidationError as exc:
+        return Response({'error': str(exc)}, status=400)
     except ObjectAlreadyExists:
-        return Response({'error': f'User {username} already exists'}, status=400)
+        return Response({'error': AccountErrorMessages.NON_UNIQUE_EMAIL_ERROR.value}, status=400)
 
     serializers = UserSerializer(instance=user)
     return Response(serializers.data, status=201)
@@ -36,9 +39,6 @@ def create_user_api(request, *args, **kwargs):
 @api_view(["POST"])
 def authenticate_user_api(request, *args, **kwargs):
     data = request.POST or request.data
-    print(data)
-    print(request.data)
-    print(request.POST)
 
     username = data.get('username')
     password = data.get('password')

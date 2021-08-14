@@ -126,6 +126,10 @@
     font-weight: 600;
 }
 
+.auth-form-input.invalid{
+    border: 2px solid red;
+}
+
 .auth-form-group{
     width: 100%;
     display: flex;
@@ -147,6 +151,10 @@
 .auth-agreement a{
     font-weight: 700;
     cursor: pointer;
+}
+
+.auth-agreement a:hover{
+    text-decoration: underline;
 }
 
 
@@ -175,6 +183,10 @@
     cursor: auto;
 }
 
+.auth-form-btn.invalid{
+    margin-top: 30px;
+}
+
 .auth-forgot-password{
     margin-top: 16px;
     text-align: center;
@@ -185,10 +197,31 @@
     cursor: pointer;
 }
 
+.auth-forgot-password:hover{
+    text-decoration: underline;
+}
+
 .auth-form.sign-in-form{
     margin-top: 100px;
 }
 
 .auth-form-btn.sign-in-btn{
     margin-top: 85px;
+}
+
+.auth-form-btn.sign-in-btn.invalid{
+    margin-top: 40px;
+}
+
+.auth-error{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 600;
+    color: red;
+    opacity: 0.8;
+}
+
+.auth-error.sign-in-error{
+    margin-top: 40px;
 }

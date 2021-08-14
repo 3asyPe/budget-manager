@@ -1,8 +1,7 @@
 import { HttpClient } from "@angular/common/http";
-import { StringMapWithRename } from "@angular/compiler/src/compiler_facade_interface";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { first, tap } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 import { User } from "./user.model";
 
 interface AuthResponse {
