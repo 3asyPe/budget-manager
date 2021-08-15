@@ -1,5 +1,5 @@
-import environ
 import os
+import environ
 
 
 env = environ.Env(
@@ -84,9 +84,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
-    'default': env.db() 
+    'default': {
+        'ENGINE' : 'django.db.backends.postgresql',
+        'NAME' : 'budget-manager',
+        'USER' : 'postgres',
+        'PASSWORD' : 'Riopop123',
+        'HOST' : 'localhost',
+        'PORT' : '5432'
+    } 
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {

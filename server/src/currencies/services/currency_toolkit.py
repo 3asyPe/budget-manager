@@ -5,7 +5,7 @@ from currencies.models import Currency
 class CurrencyToolkit:
     # Add sort by user
     @classmethod
-    def get_currency(cls, user: User, name: str) -> Currency:  
+    def get_currency(cls, name: str) -> Currency:  
         qs = Currency.objects.filter(name=name, public=True)
         if qs.exists():
             return qs.first()
@@ -27,3 +27,17 @@ class CurrencyToolkit:
 
         return currency
 
+    @classmethod
+    def delete_currency(cls, currency_id):
+        currency = cls.get_currency(currency_id=currency_id)
+        currency.delete()
+        return True
+
+    @classmethod
+    def edit_currency(cls, name, new_name, new_code):
+        from currencies.services import CurrencyEditor
+        return CurrencyEditor(
+            name=name,
+            new_name=new_name,
+            new_code=new_code
+        )()
