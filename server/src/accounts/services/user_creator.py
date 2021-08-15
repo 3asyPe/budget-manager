@@ -45,6 +45,3 @@ class UserCreator:
                 return False
 
         return True
-
-    def after_creation(self, user):
-        Token.objects.get_or_create(user=user)

@@ -21,7 +21,7 @@ def create_user_api(request, *args, **kwargs):
         return Response({'error': AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
 
     try:
-        user = UserToolKit.creater_user(
+        user = UserToolKit.create_user(
             username,
             first_name,
             second_name,
