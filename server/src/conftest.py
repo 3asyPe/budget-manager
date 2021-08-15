@@ -26,6 +26,11 @@ def mixer():
 
 
 @pytest.fixture
+def account(mixer, user):
+    return mixer.blend("accounts.Account")
+    
+
+@pytest.fixture
 def user(mixer):
     return mixer.blend("accounts.User", email="testemail@gmail.com")
 
@@ -48,3 +53,10 @@ def currency(mixer):
 @pytest.fixture
 def public_currency(mixer):
     return mixer.blend("currencies.Currency", name="USD", code="USD", public=True)
+
+
+@pytest.fixture
+def wallet(mixer, user, currency):
+    wallet = mixer.blend("wallets.Wallet", user=user)
+    balance = mixer.blend("wallets.WalletBalance", amount=3.23, wallet=wallet, currency=currency, main=True)
+    return wallet

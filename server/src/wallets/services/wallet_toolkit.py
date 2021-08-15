@@ -62,3 +62,27 @@ class WalletToolkit:
             balance["currency"] = currency
         
         return balances
+
+    @classmethod
+    def get_user_totals(cls, user) -> dict:
+        totals = {}
+        for wallet in user.wallets.all():
+            for balance in wallet.balances.all():
+                currency_name = balance.currency.name
+                if currency_name in totals:
+                    totals[currency_name] += balance.amount
+                else:
+                    totals[currency_name] = balance.amount
+        return totals
+
+    @classmethod
+    def get_account_totals(cls, account) -> dict:
+        totals = {}
+        for user in account.users.all():
+            user_totals = cls.get_user_totals(user)
+            for currency_name in user_totals:
+                if currency_name in totals:
+                    totals[currency_name] += user_totals[currency_name]
+                else:
+                    totals[currency_name] = user_totals[currency_name]
+        return totals

@@ -55,7 +55,7 @@ class User(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-    account = models.ForeignKey('accounts.Account', related_name='user', on_delete=models.CASCADE, null=True, blank=True)
+    account = models.ForeignKey('accounts.Account', related_name='users', on_delete=models.CASCADE, null=True, blank=True)
     owner = models.BooleanField(default=True)
 
     USERNAME_FIELD = "email"
