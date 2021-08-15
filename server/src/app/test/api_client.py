@@ -30,7 +30,7 @@ class DRFClient(APIClient):
                 'is_staff': False,
                 'is_superuser': True,
             }
-        user = mixer.blend('accounts.User', **user_opts)
+        user = mixer.blend('accounts.User', first_name="Name", second_name="Second-Name",**user_opts)
         self.password = ''.join([random.choice(string.hexdigits) for _ in range(0, 8)])
         user.set_password(self.password)
         user.save()

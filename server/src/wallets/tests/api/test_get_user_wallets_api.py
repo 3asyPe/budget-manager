@@ -34,7 +34,7 @@ def test_user_wallets_getting_api(get_wallets, wallet, another_wallet):
         balance = wallet.balances.first()
         r_balance = r_wallet["balances"][0]
         assert r_balance["id"] == balance.id
-        assert float(r_balance["amount"]) == balance.amount
+        assert float(r_balance["amount"]) == float(balance.amount)
         assert r_balance["main"] == balance.main
 
         currency = balance.currency
