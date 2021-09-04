@@ -18,7 +18,7 @@ class DRFClient(APIClient):
         self.user = user or self._create_user(god_mode)
         self.god_mode = god_mode
 
-        token = Token.objects.create(user=self.user)
+        token = Token.objects.get_or_create(user=self.user)[0]
         self.credentials(
             HTTP_AUTHORIZATION=f'Token {token}',
         )
@@ -30,7 +30,7 @@ class DRFClient(APIClient):
                 'is_staff': False,
                 'is_superuser': True,
             }
-        user = mixer.blend('accounts.User', **user_opts)
+        user = mixer.blend('accounts.User', first_name="Name", second_name="Second-Name",**user_opts)
         self.password = ''.join([random.choice(string.hexdigits) for _ in range(0, 8)])
         user.set_password(self.password)
         user.save()
@@ -67,7 +67,7 @@ class DRFClient(APIClient):
 
         content = self._decode(response)
         if kwargs.get("empty_content") == True:
-            assert content == {}
+            assert content is None or content == {}
         else:
             assert content
 

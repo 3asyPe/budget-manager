@@ -47,7 +47,7 @@ class WalletEditor:
     def allowed_to_edit(self, raise_exception) -> bool:
         try:
             if not 0 < len(self.name) < 41:
-                raise ValidationError(WalletErrorMessages.TOO_LONG_WALLET_NAME_ERROR.value)
+                raise ValidationError(WalletErrorMessages.WRONG_WALLET_NAME_ERROR.value)
 
             if self.wallet is None:
                 raise Wallet.DoesNotExist()

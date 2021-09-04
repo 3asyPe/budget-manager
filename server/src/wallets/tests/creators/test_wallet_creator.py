@@ -68,7 +68,7 @@ def test_wallet_creation_with_wrong_name(name, user, balances):
             balances=balances,
         )()
     
-    assert str(exc.value) == WalletErrorMessages.TOO_LONG_WALLET_NAME_ERROR.value
+    assert str(exc.value) == WalletErrorMessages.WRONG_WALLET_NAME_ERROR.value
 
 
 def test_wallet_creation_with_already_used_name(wallet, user, balances):

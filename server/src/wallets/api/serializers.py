@@ -10,6 +10,7 @@ class WalletBalanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = WalletBalance
         fields = [
+            'id',
             'currency',
             'amount',
             'main',
