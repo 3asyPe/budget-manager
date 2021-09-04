@@ -5,12 +5,12 @@ from currencies.models import Currency
 class CurrencyToolkit:
     # Add sort by user
     @classmethod
-    def get_currency(cls, name: str) -> Currency:  
-        qs = Currency.objects.filter(name=name, public=True)
+    def get_currency(cls, id: str) -> Currency:  
+        qs = Currency.objects.filter(id=id, public=True)
         if qs.exists():
             return qs.first()
         
-        qs = Currency.objects.filter(name=name, public=False, account=user.account)
+        qs = Currency.objects.filter(id=id, public=False, account=User.account)
         if qs.exists():
             return qs.first()
         
@@ -34,10 +34,14 @@ class CurrencyToolkit:
         return True
 
     @classmethod
-    def edit_currency(cls, name, new_name, new_code):
+    def edit_currency(cls, id, new_name, new_code):
         from currencies.services import CurrencyEditor
         return CurrencyEditor(
-            name=name,
+            id=id,
             new_name=new_name,
             new_code=new_code
         )()
+
+    @classmethod
+    def get_accounts_currencies(cls, account):
+        pass

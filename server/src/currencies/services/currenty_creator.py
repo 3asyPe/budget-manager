@@ -30,6 +30,8 @@ class CurrencyCreator:
                 raise ObjectAlreadyExists
             if self.code is not None and len(self.code) != 3:
                 raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_CODE_ERROR.value)
+            if len(self.name) > 25 or len(self.name) < 3:
+                raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_NAME_ERROR.value)
         except ObjectAlreadyExists as exc:
             if raise_exception:
                 raise exc
