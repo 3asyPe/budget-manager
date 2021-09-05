@@ -36,7 +36,7 @@ def create_currency_api(request):
 
 @api_view(["DELETE"])
 def delete_currency_api(request):
-    data = request.POST or request.data
+    data = request.DELETE or request.data
 
     try:
         name = data['name']
@@ -48,7 +48,7 @@ def delete_currency_api(request):
 
 @api_view(["GET"])
 def get_currency_api(request):
-    data = request.POST or request.data
+    data = request.GET or request.data
 
     try:
         name = data['name']
@@ -61,7 +61,7 @@ def get_currency_api(request):
 
 @api_view(["PUT"])
 def edit_currency_api(request):
-    data = request.POST or request.data
+    data = request.PUT or request.data
 
     try:
         name = data['name']
