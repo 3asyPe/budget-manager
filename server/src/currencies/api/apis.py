@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from accounts.models import account
 
@@ -14,6 +15,7 @@ from accounts.models import Account
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def create_currency_api(request):
     data = request.POST or request.data
     try:
@@ -36,11 +38,16 @@ def create_currency_api(request):
     return Response(serializer.data, status=200)
 
 @api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
 def delete_currency_api(request):
     data = request.POST or request.data
 
     try:
         id = data['id']
+    except KeyError:
+        return Response({"error" : AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=4000)
+
+    try:
         CurrencyToolkit.delete_currency(currency_id=id)
     except:
         return Response({"error": CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
@@ -49,19 +56,25 @@ def delete_currency_api(request):
 
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def get_currency_api(request):
     data = request.POST or request.data
 
     try:
         id = data['id']
-    except:
-        return Response({"error" : CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, 404)
+    except KeyError:
+        return Response({"error" : AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=404)
 
-    currency = CurrencyToolkit.get_currency(id=id)
+    try:
+        currency = CurrencyToolkit.get_currency(id=id)
+    except ValidationError as exc:
+        return Response({"error" : str(exc)}, status=400)
+
     serializer = CurrencySerializer(instance=currency)
     return Response(serializer.data, status=200)
 
 @api_view(["PUT"])
+@permission_classes([IsAuthenticated])
 def edit_currency_api(request):
     data = request.POST or request.data
 
@@ -69,39 +82,33 @@ def edit_currency_api(request):
         id = data['id']
         new_name = data['new_name']
         new_code = data['new_code'] 
-
-    except:
-        return Response({"error": CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
+    except KeyError:
+        return Response({"error" : AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
     
-    CurrencyToolkit.edit_currency(
-        id=id,
-        new_code=new_code,
-        new_name=new_name
-    )
-    currency = Currency.objects.filter(id=id)
+    try:
+        CurrencyToolkit.edit_currency(
+            id=id,
+            new_code=new_code,
+            new_name=new_name
+         )
+    except ValidationError as exc:
+        return Response({"error" : str(exc)}, status=400)
 
+    currency = Currency.objects.filter(id=id)
     serializer = CurrencySerializer(instance=currency, many=True)
     return Response(serializer.data, status=200)
 
-@api_view(["GET"])
-def get_currencies_api(request):
-    currencies = Currency.objects.all()
-
-    serializer = CurrencySerializer(instance=currencies, many=True)
-    return Response(serializer.data, status=200)
 
 @api_view(["GET"])
-def get_accounts_currency_api(request):
+@permission_classes([IsAuthenticated])
+def get_currency_by_account(request):
     data = request.POST or request.data
 
     try:
-        account_id = data['account_id']
-
-    except:
-        return Response({"error": AccountErrorMessages.WRONG_ACCOUNT_ID_ERROR.value}, status=400)
+        currency = Currency.objects.filter(account=request.data)
+    except ValidationError as exc:
+        return Response({"error": str(exc)}, status=400)
     
-    account = Account.objects.get(id=account_id)
-    currency = Currency.objects.filter(account=account)
     serializer = CurrencySerializer(instance=currency, many=True)
 
     return Response(serializer.data, status=200)

@@ -32,8 +32,8 @@ class CurrencyEditor:
                 return Response({"error" : CurrencyErrorMessages.WRONG_CURRENCY_CODE_ERROR.value}, status=400)
             if not Currency.objects.filter(id=self.id).exists():
                 return Response({"error" : CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
-            if Currency.objects.filter(name=self.new_name).exists():
-                return Response({'error': f'Currency with name - {self.new_name} already exists'}, 400)
+            if Currency.objects.filter(name=self.new_name, public=True).exists():
+                return Response({'error': f'Currency with name - {self.new_name} already exists'}, status=400)
             if len(self.new_name) > 25 or len(self.new_name) < 3:
                 raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_NAME_ERROR.value)
         except (Currency.DoesNotExist, ValidationError) as exc:
