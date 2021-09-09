@@ -11,7 +11,6 @@ from app.utils import AppErrorMessages
 from currencies.utils import CurrencyErrorMessages
 
 from accounts.utils import AccountErrorMessages
-from accounts.models import Account
 
 
 @api_view(["POST"])
@@ -39,14 +38,7 @@ def create_currency_api(request):
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
-def delete_currency_api(request):
-    data = request.POST or request.data
-
-    try:
-        id = data['id']
-    except KeyError:
-        return Response({"error" : AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=4000)
-
+def delete_currency_api(request, id):
     try:
         CurrencyToolkit.delete_currency(currency_id=id)
     except:
@@ -57,14 +49,7 @@ def delete_currency_api(request):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def get_currency_api(request):
-    data = request.POST or request.data
-
-    try:
-        id = data['id']
-    except KeyError:
-        return Response({"error" : AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=404)
-
+def get_currency_api(request, id):
     try:
         currency = CurrencyToolkit.get_currency(id=id)
     except ValidationError as exc:
@@ -105,10 +90,10 @@ def get_currency_by_account(request):
     data = request.POST or request.data
 
     try:
-        currency = Currency.objects.filter(account=request.data)
-    except ValidationError as exc:
-        return Response({"error": str(exc)}, status=400)
+        currencies = Currency.objects.filter(account=request.data)
+    except:
+        return Response({"error": AccountErrorMessages.ACCOUNT_DOES_NOT_EXIST_ERROR.value}, status=400)
     
-    serializer = CurrencySerializer(instance=currency, many=True)
+    serializer = CurrencySerializer(instance=currencies, many=True)
 
     return Response(serializer.data, status=200)
