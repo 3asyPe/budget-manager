@@ -17,6 +17,7 @@ pytest-xdist = "*"
 pytest-mock = "*"
 pytest-env = "*"
 mixer = "*"
+environ = "*"
 
 [dev-packages]
 

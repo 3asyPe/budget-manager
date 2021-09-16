@@ -26,4 +26,3 @@ class CurrencyToolkit:
         )()
 
         return currency
-

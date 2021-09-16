@@ -1,7 +1,6 @@
-from rest_framework import response, serializers
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from accounts.models import account
 
 from currencies.api.serializers import CurrencySerializer
 from currencies.models import Currency
@@ -9,10 +8,12 @@ from currencies.services import CurrencyToolkit
 from app.errors import ObjectAlreadyExists, ValidationError
 from app.utils import AppErrorMessages
 from currencies.utils import CurrencyErrorMessages
-from currencies.services import CurrencyCreator
+
+from accounts.utils import AccountErrorMessages
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def create_currency_api(request):
     data = request.POST or request.data
     try:
@@ -32,52 +33,61 @@ def create_currency_api(request):
     except ValidationError as exc:
         return Response({'error': str(exc)}, status=400)
     serializer = CurrencySerializer(instance=currency)
-    return Response(serializer.data, status=200)
 
-@api_view(["DELETE"])
-def delete_currency_api(request):
-    data = request.DELETE or request.data
-
+@permission_classes([IsAuthenticated])
+def delete_currency_api(request, id):
     try:
-        name = data['name']
-        Currency.objects.filter(name=name).delete()
+        CurrencyToolkit.delete_currency(currency_id=id)
     except:
         return Response({"error": CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
 
-    return Response({'success': f'currency with name {name} deleted'})
+    return Response({'success': f'currency with id {id} deleted'})
+
 
 @api_view(["GET"])
-def get_currency_api(request):
-    data = request.GET or request.data
-
+@permission_classes([IsAuthenticated])
+def get_currency_api(request, id):
     try:
-        name = data['name']
-        currency = Currency.objects.filter(name=name).get()
-    except:
-        return Response({"error": CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
+        currency = CurrencyToolkit.get_currency(id=id)
+    except ValidationError as exc:
+        return Response({"error" : str(exc)}, status=400)
 
     serializer = CurrencySerializer(instance=currency)
     return Response(serializer.data, status=200)
 
 @api_view(["PUT"])
+@permission_classes([IsAuthenticated])
 def edit_currency_api(request):
     data = request.PUT or request.data
 
     try:
-        name = data['name']
+        id = data['id']
         new_name = data['new_name']
-        new_code = data['code']
+        new_code = data['new_code'] 
+    except KeyError:
+        return Response({"error" : AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
+    
+    try:
+        CurrencyToolkit.edit_currency(
+            id=id,
+            new_code=new_code,
+            new_name=new_name
+         )
+    except ValidationError as exc:
+        return Response({"error" : str(exc)}, status=400)
 
-        if not Currency.objects.filter(name=name).exists():
-            return Response({'error': f'name {name} does not exists'})
-
-        if Currency.objects.filter(name=new_name).exists():
-            return Response({'error': f'name {new_name} already exists'})
-
-        Currency.objects.filter(name=name).update(code=new_code, name=new_name)
-        currency = Currency.objects.filter(name=new_name)
-    except:
-        return Response({"error": CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
-
+    currency = Currency.objects.filter(id=id)
     serializer = CurrencySerializer(instance=currency, many=True)
+    return Response(serializer.data, status=200)
+
+
+@api_view(["GET"])
+def get_currency_by_account(request):
+    try:
+        currencies = Currency.objects.filter(account=request.data)
+    except:
+        return Response({"error": AccountErrorMessages.ACCOUNT_DOES_NOT_EXIST_ERROR.value}, status=400)
+    
+    serializer = CurrencySerializer(instance=currencies, many=True)
+
     return Response(serializer.data, status=200)

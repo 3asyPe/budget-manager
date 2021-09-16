@@ -1,5 +1,5 @@
-import environ
 import os
+import environ
 
 
 env = environ.Env(
@@ -42,9 +42,8 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ]
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 }
 
 MIDDLEWARE = [
@@ -85,7 +84,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
-    'default': env.db() 
+    'default': env.db()
 }
 
 

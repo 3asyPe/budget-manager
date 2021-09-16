@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Wallet(models.Model):
-    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="wallets")
     name = models.CharField(max_length=40)
     
     is_hidden = models.BooleanField(default=False)

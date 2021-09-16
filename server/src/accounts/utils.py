@@ -14,6 +14,10 @@ class AccountErrorMessages(enum.Enum):
 
     USER_IS_NOT_AUTHENTICATED_ERROR = "USER_IS_NOT_AUTHENTICATED_ERROR"
 
+    WRONG_ACCOUNT_ID_ERROR = "WRONG_ACCOUNT_ID_ERROR"
+    ACCOUNT_DOES_NOT_EXIST_ERROR = "ACCOUNT_DOES_NOT_EXIST_ERROR"
+
+
 
 def get_user_upload_image_path(*args, **kwargs):
     return get_upload_image_path(*args, **kwargs, prefix="users")
