@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'accounts',
     'currencies',
     'wallets',
+    'categories',
 
     'corsheaders',
     'rest_framework',
