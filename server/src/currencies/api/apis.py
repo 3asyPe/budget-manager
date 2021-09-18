@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -33,7 +34,10 @@ def create_currency_api(request):
     except ValidationError as exc:
         return Response({'error': str(exc)}, status=400)
     serializer = CurrencySerializer(instance=currency)
+    return Response(serializer.data, status=201)
 
+
+@api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def delete_currency_api(request, id):
     try:
@@ -84,7 +88,7 @@ def edit_currency_api(request):
 @api_view(["GET"])
 def get_currency_by_account(request):
     try:
-        currencies = Currency.objects.filter(account=request.data)
+        currencies = Currency.objects.filter(account=request.user.account)
     except:
         return Response({"error": AccountErrorMessages.ACCOUNT_DOES_NOT_EXIST_ERROR.value}, status=400)
     
