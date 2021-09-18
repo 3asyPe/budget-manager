@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -60,11 +61,10 @@ def get_currency_api(request, id):
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
-def edit_currency_api(request):
+def edit_currency_api(request, id):
     data = request.POST or request.data
 
     try:
-        id = data['id']
         new_name = data['new_name']
         new_code = data['new_code'] 
     except KeyError:
@@ -87,13 +87,12 @@ def edit_currency_api(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_currency_by_account(request):
-    data = request.POST or request.data
-
     try:
-        currencies = Currency.objects.filter(account=request.data)
-    except:
+        currencies = Currency.objects.filter(account=request.user.account)
+    except ObjectDoesNotExist:
         return Response({"error": AccountErrorMessages.ACCOUNT_DOES_NOT_EXIST_ERROR.value}, status=400)
+    except KeyError:
+        return Response({"error": AppErrorMessages.REQUEST_FIELDS_ERROR.value}, 400)
     
     serializer = CurrencySerializer(instance=currencies, many=True)
-
     return Response(serializer.data, status=200)

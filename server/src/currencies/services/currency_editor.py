@@ -1,3 +1,4 @@
+from conftest import account
 from rest_framework.response import Response
 
 from currencies.models import Currency
@@ -33,9 +34,11 @@ class CurrencyEditor:
             if not Currency.objects.filter(id=self.id).exists():
                 raise ValidationError(CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value)
             if Currency.objects.filter(name=self.new_name, public=True).exists():
-                return Response({'error': f'Currency with name - {self.new_name} already exists'}, status=400)
+                raise ValidationError(CurrencyErrorMessages.CURRENCY_ALREADY_EXISTS_ERROR.value)
             if len(self.new_name) > 25 or len(self.new_name) < 3:
                 raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_NAME_ERROR.value)
+            if not Currency.objects.filter(id=self.id, public=False, account=self.currency.account.user).exists():
+                raise ValidationError(CurrencyErrorMessages.YOU_ARE_NOT_ALLOWED_TO_EDIT_ERROR.value)
         except (Currency.DoesNotExist, ValidationError) as exc:
             if raise_exception:
                 raise exc
