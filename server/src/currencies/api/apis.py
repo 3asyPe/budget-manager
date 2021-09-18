@@ -78,7 +78,8 @@ def edit_currency_api(request, id):
         currency = CurrencyToolkit.edit_currency(
             id=id,
             new_code=new_code,
-            new_name=new_name
+            new_name=new_name,
+            account=request.user.account
          )
     except ValidationError as exc:
         return Response({"error" : str(exc)}, status=400)

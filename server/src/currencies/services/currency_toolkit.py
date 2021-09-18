@@ -1,4 +1,5 @@
   
+from conftest import account
 from accounts.models import User, Account
 from currencies.models import Currency
 
@@ -30,15 +31,22 @@ class CurrencyToolkit:
 
     @classmethod
     def delete_currency(cls, currency_id: int):
-        currency = cls.get_currency(currency_id=currency_id)
-        currency.delete()
-        return True
+        if Currency.objects.filter(id=id, public=False, account=account).exists():
+            currency = Currency.objects.get(id=currency_id)
+            currency.delete()
+            return True
+        else:
+            raise Currency.DoesNotExist()
+
 
     @classmethod
-    def edit_currency(cls, id: int, new_name: str, new_code: str):
+    def edit_currency(cls, id: int, new_name: str, new_code: str, account: Account):
         from currencies.services import CurrencyEditor
-        return CurrencyEditor(
-            id=id,
-            new_name=new_name,
-            new_code=new_code
-        )()
+        if Currency.objects.filter(id=id, public=False, account=account).exists():
+            return CurrencyEditor(
+                id=id,
+                new_name=new_name,
+                new_code=new_code
+            )()
+        else:
+            raise Currency.DoesNotExist()
