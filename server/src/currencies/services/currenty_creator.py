@@ -39,3 +39,6 @@ class CurrencyCreator:
                 return False
 
         return True
+
+    def allowed_to_edit(self, raise_exception=True):
+        return True
