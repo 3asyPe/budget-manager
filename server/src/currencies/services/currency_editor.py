@@ -29,9 +29,9 @@ class CurrencyEditor:
     def allowed_to_edit(self, raise_exception=True):
         try:
             if len(self.new_code) != 3:
-                return Response({"error" : CurrencyErrorMessages.WRONG_CURRENCY_CODE_ERROR.value}, status=400)
+                raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_CODE_ERROR.value)                
             if not Currency.objects.filter(id=self.id).exists():
-                return Response({"error" : CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
+                raise ValidationError(CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value)
             if Currency.objects.filter(name=self.new_name, public=True).exists():
                 return Response({'error': f'Currency with name - {self.new_name} already exists'}, status=400)
             if len(self.new_name) > 25 or len(self.new_name) < 3:
