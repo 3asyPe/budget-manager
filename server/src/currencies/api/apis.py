@@ -22,7 +22,7 @@ def create_currency_api(request):
         code = data['code']
         account = request.user.account
     except KeyError:
-        return Response({"error": AppErrorMessages.REQUEST_FIELDS_ERROR.value}, 400)
+        return Response({"error": AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
     try:
         currency = CurrencyToolkit.create_currency(
             name=name,
@@ -89,8 +89,10 @@ def edit_currency_api(request):
 def get_currency_by_account(request):
     try:
         currencies = Currency.objects.filter(account=request.user.account)
-    except:
+    except ObjectAlreadyExists:
         return Response({"error": AccountErrorMessages.ACCOUNT_DOES_NOT_EXIST_ERROR.value}, status=400)
+    except KeyError:
+        return Response({"error": AppErrorMessages.REQUEST_FIELDS_ERROR.value}, status=400)
     
     serializer = CurrencySerializer(instance=currencies, many=True)
 
