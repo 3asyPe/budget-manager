@@ -2,7 +2,7 @@ from conftest import account
 from rest_framework.response import Response
 
 from currencies.models import Currency
-from app.errors import ValidationError
+from app.errors import ValidationError, ObjectAlreadyExists
 from currencies.utils import CurrencyErrorMessages
 
 
@@ -32,16 +32,15 @@ class CurrencyEditor:
             if len(self.new_code) != 3:
                 raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_CODE_ERROR.value)                
             if not Currency.objects.filter(id=self.id).exists():
-                raise ValidationError(CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value)
+                raise Currency.DoesNotExist()
             if Currency.objects.filter(name=self.new_name, public=True).exists():
-                raise ValidationError(CurrencyErrorMessages.CURRENCY_ALREADY_EXISTS_ERROR.value)
+               raise ObjectAlreadyExists()
             if len(self.new_name) > 25 or len(self.new_name) < 3:
                 raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_NAME_ERROR.value)
-            if not Currency.objects.filter(id=self.id, public=False, account=self.currency.account.user).exists():
-                raise ValidationError(CurrencyErrorMessages.YOU_ARE_NOT_ALLOWED_TO_EDIT_ERROR.value)
-        except (Currency.DoesNotExist, ValidationError) as exc:
+            if not Currency.objects.filter(id=self.id, public=False, account=self.currency.account).exists():
+                raise ObjectAlreadyExists()
+        except (Currency.DoesNotExist, ValidationError, ObjectAlreadyExists) as exc:
             if raise_exception:
                 raise exc
             return False
         return True
-

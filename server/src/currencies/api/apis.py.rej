@@ -1,0 +1,11 @@
+diff a/server/src/currencies/api/apis.py b/server/src/currencies/api/apis.py	(rejected hunks)
+@@ -78,7 +78,8 @@
+         currency = CurrencyToolkit.edit_currency(
+             id=id,
+             new_code=new_code,
+-            new_name=new_name
++            new_name=new_name,
++            account=request.user.account
+          )
+     except ValidationError as exc:
+         return Response({"error" : str(exc)}, status=400)

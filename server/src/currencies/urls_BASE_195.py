@@ -7,5 +7,6 @@ urlpatterns = [
      path('api/currency/create/', apis.create_currency_api),
      path('api/currency/<int:id>/delete/', apis.delete_currency_api),
      path('api/currency/<int:id>/get/', apis.get_currency_api),
-     path('api/currency/<int:id>/edit/', apis.edit_currency_api),
+     path('api/currency/edit/', apis.edit_currency_api),
      path('api/currency/get/account', apis.get_currency_by_account)
+]
