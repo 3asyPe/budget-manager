@@ -7,5 +7,3 @@ class Category(models.Model):
 
     class Meta:
         abstract = True
-
-
