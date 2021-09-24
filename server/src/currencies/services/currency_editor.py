@@ -1,4 +1,3 @@
-from conftest import account
 from rest_framework.response import Response
 
 from currencies.models import Currency

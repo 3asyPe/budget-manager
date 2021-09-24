@@ -1,5 +1,4 @@
   
-from conftest import account
 from accounts.models import User, Account
 from currencies.models import Currency
 
