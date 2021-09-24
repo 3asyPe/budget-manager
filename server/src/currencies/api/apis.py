@@ -1,7 +1,6 @@
-from rest_framework.decorators import api_view, permission_classes, schema
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from accounts.models import Account
 
 from currencies.api.serializers import CurrencySerializer
 from currencies.models import Currency
@@ -64,45 +63,7 @@ def get_currency_api(request, id):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def edit_currency_api(request, id):
-    """
-    Your docs
-    ---
 
-    type:
-      name:
-        required: true
-        type: string
-      url:
-        required: false
-        type: url
-      created_at:
-        required: true
-        type: string
-        format: date-time
-
-    serializer: .serializers.CurrencySerializer
-    omit_serializer: false
-
-    parameters_strategy: merge
-    omit_parameters:
-        - path
-    parameters:
-        - name: name
-          description: Foobar long description goes here
-          required: true
-          type: string
-          paramType: form
-        - name: other_foo
-          paramType: query
-        - name: other_bar
-          paramType: query
-        - name: avatar
-          type: file
-
-    responseMessages:
-        - code: 401
-          message: Not authenticated
-    """                      
     data = request.POST or request.data
 
     try:
