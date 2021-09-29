@@ -9,24 +9,39 @@ class Category(models.Model):
         abstract = True
 
 
-class Expense(Category):
-    expence = models.FloatField(max_length=34)
+class ExpenseCategory(Category):
+    parent = models.ForeignKey(
+        'categories.ExpenseCategory',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         verbose_name = ("Expense")
         verbose_name_plural = ("Expenses")
 
 
-class Income(Category):
-    income = models.FloatField(max_length=34)
+class IncomeCategory(Category):
+    parent = models.ForeignKey(
+        'categories.IncomeCategory',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         verbose_name = ("Income")
         verbose_name_plural = ("Incomes")
 
 
-class Comission(Category):
-    comission = models.FloatField(max_length=34)
+class ComissionCategory(Category):
+    parent = models.ForeignKey(
+        'categories.ComissionCategory',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         verbose_name = ("Comission")

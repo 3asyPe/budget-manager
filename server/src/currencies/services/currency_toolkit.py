@@ -5,7 +5,6 @@ from currencies.models import Currency
 
 
 class CurrencyToolkit:
-    # Add sort by user
     @classmethod
     def get_currency(cls, user: User, name: str) -> Currency:  
         qs = Currency.objects.filter(name=name, public=True)
