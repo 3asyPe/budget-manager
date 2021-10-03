@@ -3,4 +3,3 @@ from enum import Enum
 class WalletErrorMessages(Enum):
     WRONG_WALLET_NAME_ERROR = "WRONG_WALLET_NAME_ERROR"
     WALLET_DOES_NOT_EXIST_ERROR = "WALLET_DOES_NOT_EXIST_ERROR"
-    

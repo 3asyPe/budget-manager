@@ -1,7 +1,8 @@
+from conftest import account
 from rest_framework.response import Response
 
 from currencies.models import Currency
-from app.errors import ValidationError
+from app.errors import ValidationError, ObjectAlreadyExists
 from currencies.utils import CurrencyErrorMessages
 
 
@@ -29,16 +30,17 @@ class CurrencyEditor:
     def allowed_to_edit(self, raise_exception=True):
         try:
             if len(self.new_code) != 3:
-                return Response({"error" : CurrencyErrorMessages.WRONG_CURRENCY_CODE_ERROR.value}, status=400)
+                raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_CODE_ERROR.value)                
             if not Currency.objects.filter(id=self.id).exists():
-                return Response({"error" : CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
+                raise Currency.DoesNotExist()
             if Currency.objects.filter(name=self.new_name, public=True).exists():
-                return Response({'error': f'Currency with name - {self.new_name} already exists'}, status=400)
+               raise ObjectAlreadyExists()
             if len(self.new_name) > 25 or len(self.new_name) < 3:
                 raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_NAME_ERROR.value)
-        except (Currency.DoesNotExist, ValidationError) as exc:
+            if not Currency.objects.filter(id=self.id, public=False, account=self.currency.account).exists():
+                raise ObjectAlreadyExists()
+        except (Currency.DoesNotExist, ValidationError, ObjectAlreadyExists) as exc:
             if raise_exception:
                 raise exc
             return False
         return True
-
