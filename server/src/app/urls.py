@@ -17,6 +17,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('currencies.urls')),
     path('', include('wallets.urls')),
+    path('', include('categories.urls')),
     path('', schema_view),
     path('accounts/', include('rest_framework.urls')),
 ]
