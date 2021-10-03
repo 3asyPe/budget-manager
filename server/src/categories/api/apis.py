@@ -1,4 +1,4 @@
-from categories.models import IncomeCategory
+from categories.models import ComissionCategory, ExpenseCategory, IncomeCategory
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -40,7 +40,7 @@ def delete_income_category_api(request, id):
     except IncomeCategory.DoesNotExist:
         return Response({"error": CategoryErrorMessages.CATEOGRY_DOES_NOT_EXISTS_ERROR.value}, status=400)
 
-    return Response({'success': f'income_category with id {id} deleted'})
+    return Response({'success': f'income category with id - {id} deleted'})
     
 
 @api_view(["POST"])
@@ -65,6 +65,14 @@ def create_expense_category_api(request):
 
     serializer = CategorySerializer(instance=expoense_category)
     return Response(serializer.data, status=210)
+
+@api_view(["DELETE"])
+def delete_expense_cateogry_api(request, id):
+    try:
+        CategoryToolkit.delete_expense_cateogry(id=id)
+    except ExpenseCategory.DoesNotExist:
+        return Response({"error": f"category with id {id} does not exists"})
+    return Response({"success": f"expense comission with id - {id} deleted"})
 
 @api_view(["POST"])
 def create_comission_category_api(request):
@@ -110,4 +118,12 @@ def create_income_category_api(request):
         return Response({"error": str(exc)}, status=400)
 
     serializer = CategorySerializer(instance=income_cateogry)
-    return Response(serializer.data, status=210) 
+    return Response(serializer.data, status=210)
+
+@api_view(["DELETE"])
+def delete_comission_category_api(request, id):
+    try:
+        CategoryToolkit.delete_commission_category(id=id)
+    except ComissionCategory.DoesNotExist:
+        return Response({"error": CategoryErrorMessages.CATEOGRY_DOES_NOT_EXISTS_ERROR.value}, status=400)
+    return Response({"success": f"comission cateogry with id - {id} deleted"})

@@ -16,7 +16,7 @@ class CategoryToolkit:
     @classmethod
     def delete_income_category(cls, id):
         if IncomeCategory.objects.filter(id=id).exists():
-            IncomeCategory.objects.delete(id=id)
+            IncomeCategory.objects.filter(id=id).delete()
             return True
         else:
             raise IncomeCategory.DoesNotExist()
@@ -33,9 +33,9 @@ class CategoryToolkit:
         return expence_category
 
     @classmethod
-    def delete_expense_cateogry(cls, name, is_hidden, parent):
+    def delete_expense_cateogry(cls, id):
         if ExpenseCategory.objects.filter(id=id).exists():
-            ExpenseCategory.objects.delete(id=id)
+            ExpenseCategory.objects.filter(id=id).delete()
             return True
         else:
             raise ExpenseCategory.DoesNotExist()
@@ -54,7 +54,7 @@ class CategoryToolkit:
     @classmethod
     def delete_commission_category(cls, id):
         if ComissionCategory.objects.filter(id=id).exists():
-            ComissionCategory.objects.delete(id=id)
+            ComissionCategory.objects.filter(id=id).delete()
             return True
         else:
             raise ComissionCategory.DoesNotExist()
