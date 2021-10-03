@@ -49,7 +49,7 @@ def delete_currency_api(request, id):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticatfed])
+@permission_classes([IsAuthenticated])
 def get_currency_api(request, id):
     try:
         currency = Currency.objects.get(id=id)

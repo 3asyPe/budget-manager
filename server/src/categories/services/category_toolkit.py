@@ -1,3 +1,6 @@
+from categories.models import IncomeCategory, ExpenseCategory, ComissionCategory
+
+
 class CategoryToolkit:
     @classmethod
     def create_income_category(cls, name, is_hidden, parent):
@@ -9,6 +12,14 @@ class CategoryToolkit:
         )()
 
         return income_category
+    
+    @classmethod
+    def delete_income_category(cls, id):
+        if IncomeCategory.objects.filter(id=id).exists():
+            IncomeCategory.objects.delete(id=id)
+            return True
+        else:
+            raise IncomeCategory.DoesNotExist()
 
     @classmethod
     def create_expense_category(cls, name, is_hidden, parent):
@@ -22,6 +33,14 @@ class CategoryToolkit:
         return expence_category
 
     @classmethod
+    def delete_expense_cateogry(cls, name, is_hidden, parent):
+        if ExpenseCategory.objects.filter(id=id).exists():
+            ExpenseCategory.objects.delete(id=id)
+            return True
+        else:
+            raise ExpenseCategory.DoesNotExist()
+
+    @classmethod
     def create_comission_category(cls, name, is_hidden, parent):
         from categories.services import ComissionCategoryCreator
         comission_category = ComissionCategoryCreator(
@@ -31,3 +50,11 @@ class CategoryToolkit:
         )()
 
         return comission_category
+
+    @classmethod
+    def delete_commission_category(cls, id):
+        if ComissionCategory.objects.filter(id=id).exists():
+            ComissionCategory.objects.delete(id=id)
+            return True
+        else:
+            raise ComissionCategory.DoesNotExist()
