@@ -21,19 +21,21 @@ class CurrencyCreator:
             name=self.name,
             code=self.code,
             account=self.account,
-            
         )
 
     def allowed_to_create(self, raise_exception=True):
         try:
-            if Currency.objects.filter(name=self.name, account=self.account).exists():
+            if Currency.objects.filter(name=self.name, public=False, account=self.account).exists():
+                raise ObjectAlreadyExists
+            if Currency.objects.filter(name=self.name, public=True):
                 raise ObjectAlreadyExists
             if self.code is not None and len(self.code) != 3:
                 raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_CODE_ERROR.value)
             if len(self.name) > 25 or len(self.name) < 3:
                 raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_NAME_ERROR.value)
-        except ObjectAlreadyExists as exc:
+        except (ObjectAlreadyExists, ValidationError) as exc:
             if raise_exception:
                 raise exc
             else:
                 return False
+        return True
