@@ -1,3 +1,4 @@
+from rest_framework import schemas
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -63,7 +64,17 @@ def get_currency_api(request, id):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def edit_currency_api(request, id):
-
+    """
+    Your docs
+    ---
+    parameters:
+        - name: name
+          description: name
+          required: true
+          type: string
+        - name: code
+          required: true
+    """
     data = request.POST or request.data
 
     try:
