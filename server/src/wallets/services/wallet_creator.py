@@ -2,7 +2,6 @@ from typing import Union, Optional
 
 from app.errors import ValidationError, ObjectAlreadyExists
 from accounts.models import User
-from currencies.models import Currency
 from wallets.models import Wallet, WalletBalance
 from wallets.utils import WalletErrorMessages
 

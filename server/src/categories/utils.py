@@ -1,0 +1,6 @@
+from enum import Enum
+
+
+class CategoryErrorMessages(Enum):
+    WRONG_CATEGORY_NAME_ERROR = "WRONG_CATEGORY_NAME_ERROR"
+    CATEOGRY_DOES_NOT_EXISTS_ERROR = "CATEOGRY_DOES_NOT_EXISTS_ERROR"

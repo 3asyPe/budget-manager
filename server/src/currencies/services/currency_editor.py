@@ -1,5 +1,3 @@
-from rest_framework.response import Response
-
 from currencies.models import Currency
 from app.errors import ValidationError, ObjectAlreadyExists
 from currencies.utils import CurrencyErrorMessages

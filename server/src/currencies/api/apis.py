@@ -1,8 +1,7 @@
-from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import schemas
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from accounts.models import account
 
 from currencies.api.serializers import CurrencySerializer
 from currencies.models import Currency
@@ -11,13 +10,12 @@ from app.errors import ObjectAlreadyExists, ValidationError
 from app.utils import AppErrorMessages
 from currencies.utils import CurrencyErrorMessages
 
-from accounts.utils import AccountErrorMessages
-
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def create_currency_api(request):
     data = request.POST or request.data
+
     try:
         name = data['name']
         code = data['code']
@@ -66,6 +64,17 @@ def get_currency_api(request, id):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def edit_currency_api(request, id):
+    """
+    Your docs
+    ---
+    parameters:
+        - name: name
+          description: name
+          required: true
+          type: string
+        - name: code
+          required: true
+    """
     data = request.POST or request.data
 
     try:
