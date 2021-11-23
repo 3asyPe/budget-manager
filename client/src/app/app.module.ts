@@ -11,12 +11,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
+import { HomeComponent } from './home/home.component';
+import { TransfersComponent } from './home/transfers/transfers.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
     HeaderComponent,
+    HomeComponent,
+    TransfersComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,7 +31,8 @@ import { MatInputModule } from '@angular/material/input';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    MatMomentDateModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true }

@@ -1,0 +1,35 @@
+<div class="transfers-container">
+    <div class="transfers">
+        <div class="transfers-buttons">
+            <button class="transfers-button" (click)="transfersMode='expenses'" [ngClass]="{'active': transfersMode=='expenses'}">Expenses</button>
+            <button class="transfers-button" (click)="transfersMode='incomes'" [ngClass]="{'active': transfersMode=='incomes'}">Incomes</button>
+            <button class="transfers-button" (click)="transfersMode='transfers'" [ngClass]="{'active': transfersMode=='transfers'}">Tranfers</button>
+            <button class="transfers-button" (click)="transfersMode='currencyExchange'" [ngClass]="{'active': transfersMode=='currencyExchange'}">Currency exchange</button>
+        </div>
+
+        <!-- <div class="block" *ngIf="transfersMode=='expenses'">
+            <div class="date-box">
+                <mat-datepicker-toggle matSuffix [for]="dp">
+                    <mat-icon matDatepickerToggleIcon><img src="assets/images/calendar.svg" class="calendar-icon"></mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #dp></mat-datepicker>
+                <input class="date" matInput [matDatepicker]="dp" [formControl]="date" readonly>
+            </div>
+            <div class="block-title"><span>E</span>xpenses today</div>
+        </div>
+        <form class="form-block" #expensesForm="ngForm">
+            <div class="amount-box form-block-input">
+                <input type="number" min="0" placeholder="Amount*" required name="amount" class="amount">
+                <mat-select class="currency-select" [(value)]="currency">
+                    <mat-option *ngFor="let currency of currencies" [value]="currency.name">
+                        {{currency.name}}
+                    </mat-option>
+                </mat-select>   
+            </div>
+        </form> -->
+    </div>
+
+    <div class="transfers-history">
+
+    </div>
+</div>
