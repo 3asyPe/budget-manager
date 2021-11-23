@@ -9,9 +9,9 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def balances(currency, public_currency):
+def balances(private_currency, public_currency):
     return [
-        {"currency_name": currency.name},
+        {"currency_name": private_currency.name},
         {"currency_name": public_currency.name}
     ]
 

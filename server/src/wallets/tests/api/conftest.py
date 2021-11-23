@@ -5,11 +5,11 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def balances(currency, public_currency):
+def balances(private_currency, public_currency):
     return [
         {
             "amount": 1.00,
-            "currency_name": currency.name
+            "currency_name": private_currency.name
         },
         {
             "amount": 1.00,
@@ -23,3 +23,10 @@ def wallet(api, wallet):
     wallet.user = api.user
     wallet.save()
     return wallet
+
+
+@pytest.fixture
+def private_currency(api, private_currency):
+    private_currency.account = api.user.account
+    private_currency.save()
+    return private_currency

@@ -11,15 +11,16 @@ django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
 django-environ = "*"
+django-rest-swagger = "*"
+environ = "*"
+
+[dev-packages]
 pytest = "*"
 pytest-django = "*"
 pytest-xdist = "*"
 pytest-mock = "*"
 pytest-env = "*"
 mixer = "*"
-environ = "*"
-
-[dev-packages]
 
 [requires]
 python_version = "3.9"

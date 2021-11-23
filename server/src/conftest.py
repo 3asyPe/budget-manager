@@ -26,13 +26,13 @@ def mixer():
 
 
 @pytest.fixture
-def account(mixer, user):
+def account(mixer):
     return mixer.blend("accounts.Account")
     
 
 @pytest.fixture
-def user(mixer):
-    return mixer.blend("accounts.User", email="testemail@gmail.com")
+def user(mixer, account):
+    return mixer.blend("accounts.User", email="testemail@gmail.com", account=account)
 
 
 @pytest.fixture
@@ -46,8 +46,8 @@ def anonymous_user(mixer):
 
 
 @pytest.fixture
-def currency(mixer):
-    return mixer.blend("currencies.Currency")
+def private_currency(mixer, user):
+    return mixer.blend("currencies.Currency", public=False, account=user.account)
 
 
 @pytest.fixture
@@ -56,7 +56,13 @@ def public_currency(mixer):
 
 
 @pytest.fixture
-def wallet(mixer, user, currency):
+def wallet(mixer, user, private_currency):
     wallet = mixer.blend("wallets.Wallet", user=user)
-    balance = mixer.blend("wallets.WalletBalance", amount=3.23, wallet=wallet, currency=currency, main=True)
+    balance = mixer.blend(
+        "wallets.WalletBalance", 
+        amount=3.23, 
+        wallet=wallet, 
+        currency=private_currency, 
+        main=True
+    )
     return wallet

@@ -42,20 +42,20 @@ def create_currency_api(request):
 @permission_classes([IsAuthenticated])
 def delete_currency_api(request, id):
     try:
-        CurrencyToolkit.delete_currency(currency_id=id)
+        CurrencyToolkit.delete_currency(currency_id=id, account=request.user.account)
     except Currency.DoesNotExist:
-        return Response({"error": CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
+        return Response({"error": CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=404)
 
-    return Response({'success': f'currency with id {id} deleted'})
+    return Response(status=204)
 
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_currency_api(request, id):
     try:
-        currency = Currency.objects.get(id=id)
+        currency = CurrencyToolkit.get_currency_by_id(user=request.user, id=id)
     except Currency.DoesNotExist:
-        return Response({"error" : CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=400)
+        return Response({"error" : CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=404)
 
     serializer = CurrencySerializer(instance=currency)
     return Response(serializer.data, status=200)
@@ -64,17 +64,6 @@ def get_currency_api(request, id):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def edit_currency_api(request, id):
-    """
-    Your docs
-    ---
-    parameters:
-        - name: name
-          description: name
-          required: true
-          type: string
-        - name: code
-          required: true
-    """
     data = request.POST or request.data
 
     try:
@@ -87,7 +76,8 @@ def edit_currency_api(request, id):
         currency = CurrencyToolkit.edit_currency(
             id=id,
             new_code=new_code,
-            new_name=new_name
+            new_name=new_name,
+            account=request.user.account
          )
     except ValidationError as exc:
         return Response({"error" : str(exc)}, status=400)
@@ -96,7 +86,7 @@ def edit_currency_api(request, id):
     except Currency.DoesNotExist:
         return Response({"error" : CurrencyErrorMessages.CURRENCY_DOES_NOT_EXIST_ERROR.value}, status=404)
 
-    serializer = CurrencySerializer(instance=currency, many=True)
+    serializer = CurrencySerializer(instance=currency)
     return Response(serializer.data, status=200)
 
 

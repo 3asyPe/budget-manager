@@ -10,10 +10,10 @@ pytestmark = [pytest.mark.django_db]
 
 
 @pytest.fixture
-def balances(currency, public_currency):
+def balances(private_currency, public_currency):
     return [
         {
-            "currency": currency,
+            "currency": private_currency,
             "amount": 1.00
         },
         {
@@ -41,9 +41,9 @@ def test_wallet_creation(user, balances):
 
 
 @pytest.mark.parametrize("start_balance", [0.00, -123.2, 1231023, "1.00"])
-def test_wallet_creation_with_any_start_balance(start_balance, user, currency):
+def test_wallet_creation_with_any_start_balance(start_balance, user, private_currency):
     balances = [{
-        "currency": currency,
+        "currency": private_currency,
         "amount": start_balance,
     }]
     wallet = WalletCreator(

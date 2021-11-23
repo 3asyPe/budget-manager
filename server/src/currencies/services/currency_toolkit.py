@@ -4,7 +4,7 @@ from currencies.models import Currency
 
 class CurrencyToolkit:
     @classmethod
-    def get_currency(cls, user: User, name: str) -> Currency:  
+    def get_currency_by_name(cls, user: User, name: str) -> Currency:  
         qs = Currency.objects.filter(name=name, public=True)
         if qs.exists():
             return qs.first()
@@ -14,6 +14,20 @@ class CurrencyToolkit:
             return qs.first()
         
         raise Currency.DoesNotExist()
+
+
+    @classmethod
+    def get_currency_by_id(cls, user: User, id: int) -> Currency:
+        qs = Currency.objects.filter(id=id, public=True)
+        if qs.exists():
+            return qs.first()
+
+        qs = Currency.objects.filter(id=id, public=False, account=user.account)
+        if qs.exists():
+            return qs.first()
+        
+        raise Currency.DoesNotExist()
+
 
     @classmethod
     def create_currency(cls, name: str, code: str, account: Account):
@@ -27,13 +41,10 @@ class CurrencyToolkit:
         return currency
 
     @classmethod
-    def delete_currency(cls, currency_id: int):
-        if Currency.objects.filter(id=id, public=False, account=account).exists():
-            currency = Currency.objects.get(id=currency_id)
-            currency.delete()
-            return True
-        else:
-            raise Currency.DoesNotExist()
+    def delete_currency(cls, currency_id: int, account: Account):
+        currency = Currency.objects.get(id=currency_id, public=False, account=account)
+        currency.delete()
+        return True
 
 
     @classmethod

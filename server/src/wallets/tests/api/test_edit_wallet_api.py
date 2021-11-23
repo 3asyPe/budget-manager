@@ -18,10 +18,10 @@ def edit_wallet(api, **kwargs):
 
 
 @pytest.fixture
-def balances(wallet, currency, public_currency):
+def balances(wallet, private_currency, public_currency):
     return [
         {
-            "currency_name": currency.name,
+            "currency_name": private_currency.name,
             "amount": 19.00,
         },
         {
@@ -32,7 +32,7 @@ def balances(wallet, currency, public_currency):
 
 
 
-def test_wallet_editing_api(edit_wallet, wallet, balances, currency, public_currency):
+def test_wallet_editing_api(edit_wallet, wallet, balances, private_currency, public_currency):
     balance = wallet.balances.first()
 
     new_wallet = edit_wallet(
@@ -46,7 +46,7 @@ def test_wallet_editing_api(edit_wallet, wallet, balances, currency, public_curr
 
     first_balance = new_wallet["balances"][0]
     assert first_balance["id"] == balance.id
-    assert first_balance["currency"]["name"] == currency.name
+    assert first_balance["currency"]["name"] == private_currency.name
     assert float(first_balance["amount"]) == 19.00
 
     second_balance = new_wallet["balances"][1]

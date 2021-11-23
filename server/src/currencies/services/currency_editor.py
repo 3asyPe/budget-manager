@@ -32,9 +32,9 @@ class CurrencyEditor:
                 raise Currency.DoesNotExist()
             if Currency.objects.filter(name=self.new_name, public=True).exists():
                raise ObjectAlreadyExists()
-            if len(self.new_name) > 25 or len(self.new_name) < 3:
+            if not 0 < len(self.new_name) <= 10:
                 raise ValidationError(CurrencyErrorMessages.WRONG_CURRENCY_NAME_ERROR.value)
-            if not Currency.objects.filter(id=self.id, public=False, account=self.currency.account).exists():
+            if Currency.objects.filter(name=self.new_name, public=False, account=self.currency.account).exists():
                 raise ObjectAlreadyExists()
         except (Currency.DoesNotExist, ValidationError, ObjectAlreadyExists) as exc:
             if raise_exception:

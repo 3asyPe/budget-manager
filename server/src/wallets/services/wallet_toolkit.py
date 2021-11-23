@@ -58,7 +58,7 @@ class WalletToolkit:
             except KeyError:
                 raise ValidationError(AppErrorMessages.REQUEST_FIELDS_ERROR.value)
 
-            currency = CurrencyToolkit.get_currency(user=user, name=currency_name)
+            currency = CurrencyToolkit.get_currency_by_name(user=user, name=currency_name)
             balance["currency"] = currency
         
         return balances

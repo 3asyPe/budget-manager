@@ -31,14 +31,14 @@ def create_income_category_api(request):
         return Response({"error": str(exc)}, status=400)
 
     serializer = CategorySerializer(instance=income_category)
-    return Response(serializer.data, status=210)
+    return Response(serializer.data, status=201)
 
 @api_view(["DELETE"])
 def delete_income_category_api(request, id):
     try:
         CategoryToolkit.delete_income_category(id=id)
     except IncomeCategory.DoesNotExist:
-        return Response({"error": CategoryErrorMessages.CATEOGRY_DOES_NOT_EXISTS_ERROR.value}, status=400)
+        return Response({"error": CategoryErrorMessages.CATEGORY_DOES_NOT_EXISTS_ERROR.value}, status=400)
 
     return Response({'success': f'income category with id - {id} deleted'})
     
@@ -64,7 +64,7 @@ def create_expense_category_api(request):
         return Response({"error": str(exc)}, status=400)
 
     serializer = CategorySerializer(instance=expoense_category)
-    return Response(serializer.data, status=210)
+    return Response(serializer.data, status=201)
 
 @api_view(["DELETE"])
 def delete_expense_cateogry_api(request, id):
@@ -95,7 +95,7 @@ def create_comission_category_api(request):
         return Response({"error": str(exc)}, status=400)
 
     serializer = CategorySerializer(instance=comission_cateogry)
-    return Response(serializer.data, status=210)
+    return Response(serializer.data, status=201)
 
 @api_view(["POST"])
 def create_income_category_api(request):
@@ -118,12 +118,12 @@ def create_income_category_api(request):
         return Response({"error": str(exc)}, status=400)
 
     serializer = CategorySerializer(instance=income_cateogry)
-    return Response(serializer.data, status=210)
+    return Response(serializer.data, status=201)
 
 @api_view(["DELETE"])
 def delete_comission_category_api(request, id):
     try:
         CategoryToolkit.delete_commission_category(id=id)
     except ComissionCategory.DoesNotExist:
-        return Response({"error": CategoryErrorMessages.CATEOGRY_DOES_NOT_EXISTS_ERROR.value}, status=400)
+        return Response({"error": CategoryErrorMessages.CATEGORY_DOES_NOT_EXISTS_ERROR.value}, status=400)
     return Response({"success": f"comission cateogry with id - {id} deleted"})
